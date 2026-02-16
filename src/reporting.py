@@ -817,9 +817,51 @@ The top {len(df)} autoencoder anomalies are listed in
 ### 6D. Ensemble Gradient Boosting
 
 A stacked ensemble of LightGBM, XGBoost, and CatBoost was trained with Optuna
-Bayesian hyperparameter optimization (50 trials per model) to predict provider
+Bayesian hyperparameter optimization (15 trials per model) to predict provider
 spending. The ensemble uses a Ridge meta-learner for stacking and provides
 conformal prediction intervals.""")
+
+    ens_metrics_path = tables_dir / "ensemble_model_metrics.csv"
+    if ens_metrics_path.exists():
+        try:
+            edf = pd.read_csv(ens_metrics_path, index_col=0)
+            sections.append("""
+**Model Performance (Log-Scale):**
+
+| Model | R² (log) | RMSE (log) | MAE (log) |
+|-------|----------|-----------|----------|""")
+            for model_name, row in edf.iterrows():
+                r2 = row.get('r2_log', row.get('r2', 'N/A'))
+                rmse = row.get('rmse_log', row.get('rmse', 'N/A'))
+                mae = row.get('mae_log', row.get('mae', 'N/A'))
+                r2_str = f"{r2:.4f}" if isinstance(r2, (int, float)) else str(r2)
+                rmse_str = f"{rmse:.4f}" if isinstance(rmse, (int, float)) else str(rmse)
+                mae_str = f"{mae:.4f}" if isinstance(mae, (int, float)) else str(mae)
+                sections.append(f"| {model_name} | {r2_str} | {rmse_str} | {mae_str} |")
+        except Exception:
+            pass
+
+    ens_imp_path = tables_dir / "ensemble_feature_importance.csv"
+    if ens_imp_path.exists():
+        try:
+            imp = pd.read_csv(ens_imp_path)
+            top5 = imp.head(5)
+            sections.append("""
+**Top 5 Features (LightGBM Importance):**
+
+| Feature | Importance |
+|---------|-----------|""")
+            for _, row in top5.iterrows():
+                sections.append(f"| {row['feature']} | {row['importance']:,.0f} |")
+        except Exception:
+            pass
+
+    sections.append("""
+![Ensemble Actual vs Predicted](outputs/figures/ensemble_actual_vs_predicted.png)
+
+![Ensemble Feature Importance](outputs/figures/ensemble_feature_importance.png)
+
+![Ensemble Conformal Intervals](outputs/figures/ensemble_conformal_intervals.png)""")
 
     sections.append("""
 ### 6E. Provider Trajectory Analysis

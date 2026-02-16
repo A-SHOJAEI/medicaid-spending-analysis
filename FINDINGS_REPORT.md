@@ -1,6 +1,6 @@
 # Medicaid Provider Spending Analysis: Findings Report
 
-**Generated:** 2026-02-15 20:02:25
+**Generated:** 2026-02-16 01:51:51
 **Dataset:** HHS/DOGE Medicaid Provider Spending (T-MSIS)
 **Coverage:** Fee-for-service, managed care, and CHIP claims (2018-2024)
 **Source:** Centers for Medicare & Medicaid Services (CMS), T-MSIS Analytic Files
@@ -689,9 +689,15 @@ The top 100 autoencoder anomalies are listed in
 ### 6D. Ensemble Gradient Boosting
 
 A stacked ensemble of LightGBM, XGBoost, and CatBoost was trained with Optuna
-Bayesian hyperparameter optimization (50 trials per model) to predict provider
+Bayesian hyperparameter optimization (15 trials per model) to predict provider
 spending. The ensemble uses a Ridge meta-learner for stacking and provides
 conformal prediction intervals.
+
+![Ensemble Actual vs Predicted](outputs/figures/ensemble_actual_vs_predicted.png)
+
+![Ensemble Feature Importance](outputs/figures/ensemble_feature_importance.png)
+
+![Ensemble Conformal Intervals](outputs/figures/ensemble_conformal_intervals.png)
 
 ### 6E. Provider Trajectory Analysis
 
@@ -857,6 +863,26 @@ The Chernozhukov et al. (2018) Double/Debiased ML framework estimates the causal
 impact of COVID on provider spending with rigorous statistical guarantees. Cross-fitted
 ML nuisance models (LightGBM) partial out confounding, and EconML's CausalForestDML
 estimates heterogeneous treatment effects across provider types.
+
+| Metric | Value |
+|--------|-------|
+| Observations | 518,826 |
+| Unique providers | 262,098 |
+| ATE (log-spending) | 0.0019 |
+| Standard error | 0.0005 |
+| 95% CI | [0.0009, 0.0029] |
+| p-value | 1.70e-04 |
+| Multiplicative effect | +0.2% |
+
+**Interpretation:** COVID caused an average 0.2% increase
+in provider spending, after controlling for observable confounders via ML-based
+debiasing. This estimate has double-robustness guarantees.
+
+![DML ATE](outputs/figures/dml_ate_estimate.png)
+
+![CATE by Provider Size](outputs/figures/dml_cate_by_provider_size.png)
+
+![CATE Distribution](outputs/figures/dml_cate_distribution.png)
 
 ### 7E. Information-Theoretic Analysis
 
