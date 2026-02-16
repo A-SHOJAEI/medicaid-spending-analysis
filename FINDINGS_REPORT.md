@@ -1,6 +1,6 @@
 # Medicaid Provider Spending Analysis: Findings Report
 
-**Generated:** 2026-02-16 01:51:51
+**Generated:** 2026-02-16 05:25:08
 **Dataset:** HHS/DOGE Medicaid Provider Spending (T-MSIS)
 **Coverage:** Fee-for-service, managed care, and CHIP claims (2018-2024)
 **Source:** Centers for Medicare & Medicaid Services (CMS), T-MSIS Analytic Files
@@ -693,11 +693,32 @@ Bayesian hyperparameter optimization (15 trials per model) to predict provider
 spending. The ensemble uses a Ridge meta-learner for stacking and provides
 conformal prediction intervals.
 
-![Ensemble Actual vs Predicted](outputs/figures/ensemble_actual_vs_predicted.png)
+**Model Performance (Log-Scale):**
 
-![Ensemble Feature Importance](outputs/figures/ensemble_feature_importance.png)
+| Model | R² (log) | RMSE (log) | MAE (log) |
+|-------|----------|-----------|----------|
+| lgbm | 0.9459 | 0.6703 | 0.4076 |
+| xgb | 0.9498 | 0.6458 | 0.3845 |
+| catboost | 0.9470 | 0.6634 | 0.4057 |
+| stacked | 0.9514 | 0.6356 | 0.3774 |
 
-![Ensemble Conformal Intervals](outputs/figures/ensemble_conformal_intervals.png)
+**Top 5 Features (LightGBM Importance):**
+
+| Feature | Importance |
+|---------|-----------|
+| svd_1 | 4,477 |
+| svd_5 | 4,240 |
+| svd_9 | 4,173 |
+| svd_3 | 4,095 |
+| svd_8 | 3,879 |
+
+![Ensemble Predicted vs Actual](outputs/figures/ensemble_predicted_vs_actual.png)
+
+![Ensemble Model Comparison](outputs/figures/ensemble_model_comparison.png)
+
+![Ensemble Prediction Intervals](outputs/figures/ensemble_prediction_intervals.png)
+
+![Ensemble Optuna Optimization](outputs/figures/ensemble_optuna_optimization.png)
 
 ### 6E. Provider Trajectory Analysis
 

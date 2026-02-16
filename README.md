@@ -159,7 +159,7 @@ medicaid-spending-analysis/
 
 ### Machine Learning
 - LightGBM regressor (R² = 0.832 on log-scale)
-- Stacked ensemble: LightGBM + XGBoost + CatBoost with Optuna HPO and conformal prediction intervals
+- Stacked ensemble: LightGBM + XGBoost + CatBoost with Optuna HPO (R² = 0.951) and conformal prediction intervals (90% coverage)
 - K-Means clustering (silhouette = 0.993)
 - UMAP + HDBSCAN density-based clustering
 - SARIMA(1,1,1)(1,1,1,12) forecasting

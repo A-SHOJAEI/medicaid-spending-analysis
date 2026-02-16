@@ -857,11 +857,13 @@ conformal prediction intervals.""")
             pass
 
     sections.append("""
-![Ensemble Actual vs Predicted](outputs/figures/ensemble_actual_vs_predicted.png)
+![Ensemble Predicted vs Actual](outputs/figures/ensemble_predicted_vs_actual.png)
 
-![Ensemble Feature Importance](outputs/figures/ensemble_feature_importance.png)
+![Ensemble Model Comparison](outputs/figures/ensemble_model_comparison.png)
 
-![Ensemble Conformal Intervals](outputs/figures/ensemble_conformal_intervals.png)""")
+![Ensemble Prediction Intervals](outputs/figures/ensemble_prediction_intervals.png)
+
+![Ensemble Optuna Optimization](outputs/figures/ensemble_optuna_optimization.png)""")
 
     sections.append("""
 ### 6E. Provider Trajectory Analysis

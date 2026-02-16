@@ -12,6 +12,10 @@ medicaid-provider-spending.csv
 outputs/models/*.pt
 outputs/models/*.joblib
 outputs/models/*.pkl
+outputs/models/*.cbm
+
+# CatBoost training logs
+catboost_info/
 
 # Python
 **/__pycache__/
