@@ -3,7 +3,7 @@
 ![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)
 ![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)
 
-A comprehensive data science analysis of the HHS/DOGE Medicaid Provider Spending dataset (T-MSIS), covering $1.09 trillion in provider-level Medicaid claims from 2018-2024 across 227 million records. Employs 30+ statistical and machine learning techniques across a 10-phase pipeline, including state-of-the-art methods from topological data analysis, optimal transport theory, and causal machine learning.
+A comprehensive data science analysis of the HHS/DOGE Medicaid Provider Spending dataset (T-MSIS), covering $1.09 trillion in provider-level Medicaid claims from 2018-2024 across 227 million records. Employs 35+ statistical and machine learning techniques across a 10-phase pipeline, including state-of-the-art methods from topological data analysis, optimal transport theory, causal machine learning, survival analysis, and extreme value theory.
 
 ## Key Findings
 
@@ -16,6 +16,11 @@ A comprehensive data science analysis of the HHS/DOGE Medicaid Provider Spending
 - **2,887 provider communities** detected via Louvain graph clustering with modularity 0.233
 - **3,190 topological loops (H1)** discovered in provider feature space via persistent homology
 - **Optimal transport** reveals largest distributional shift between 2020→2021 (Wasserstein-1 = 0.107)
+- **Provider survival**: Cox PH model (concordance = 0.925) shows 51% provider dropout rate; years active is the strongest predictor of longevity
+- **Heavy-tailed spending** (GPD xi = 0.747): Extreme Value Theory confirms Frechet-type heavy tail; 99% VaR quantifies extreme spending risk
+- **15 provider phenotypes** identified via BIC-optimal Gaussian Mixture Models with soft clustering
+- **10,259 spending changepoints** detected at provider level; significantly enriched during COVID (p = 1.1e-10)
+- **6,622 majority-consensus anomalies** identified by cross-method stacking of 8 independent detection methods
 
 ## Dataset
 
@@ -74,7 +79,12 @@ make vae                 # Phase 7B: β-VAE anomaly detection
 make optimal-transport   # Phase 7C: Optimal transport analysis
 make double-ml           # Phase 7D: Double machine learning
 make info-theory         # Phase 7E: Information-theoretic analysis
-make report              # Phase 8: Generate findings report
+make survival            # Phase 8A: Provider survival analysis
+make extreme-value       # Phase 8B: Extreme value theory
+make phenotyping         # Phase 8C: Provider phenotyping (GMM)
+make changepoints        # Phase 8D: Per-provider changepoint detection
+make anomaly-consensus   # Phase 8E: Cross-method anomaly consensus
+make report              # Report: Generate findings report
 
 # Run tests
 make test
@@ -122,6 +132,11 @@ medicaid-spending-analysis/
 │   ├── optimal_transport.py         # Wasserstein distances + transport plans
 │   ├── double_ml.py                 # DML causal effects + CausalForest CATE
 │   ├── information_theory.py        # Shannon entropy, MI, transfer entropy
+│   ├── survival_analysis.py        # Kaplan-Meier, Cox PH, log-rank tests
+│   ├── extreme_value.py            # GPD tail modeling, VaR/CVaR
+│   ├── provider_phenotyping.py     # GMM soft clustering, phenotype profiling
+│   ├── changepoint_detection.py    # Per-provider PELT changepoint detection
+│   ├── anomaly_consensus.py        # Cross-method anomaly stacking & consensus
 │   ├── reporting.py                 # Auto-generates FINDINGS_REPORT.md
 │   └── utils.py                     # Logging, plotting defaults, formatters
 │
@@ -195,6 +210,35 @@ medicaid-spending-analysis/
 - Mutual information between features and spending outcomes
 - Transfer entropy for directed temporal information flow
 - Jensen-Shannon divergence for cluster comparison
+
+### Survival Analysis
+- Kaplan-Meier estimator by provider size tier
+- Cox Proportional Hazards regression (concordance = 0.925)
+- Log-rank tests between provider groups
+- Cohort entry/dropout analysis
+
+### Extreme Value Theory
+- Generalized Pareto Distribution (GPD) via peaks-over-threshold
+- Value at Risk (VaR) and Conditional VaR at 95%/99%
+- Yearly tail evolution and return level estimation
+- Hill estimator for tail index
+
+### Provider Phenotyping
+- Gaussian Mixture Models with BIC/AIC model selection (2-15 components)
+- Soft cluster assignment with posterior probabilities
+- HCPCS code enrichment analysis per phenotype
+- Radar/spider plots of phenotype profiles
+
+### Changepoint Detection
+- Per-provider PELT (Pruned Exact Linear Time) changepoint detection
+- Changepoint type classification (mean-shift, variance-shift, trend-break)
+- COVID-period enrichment testing (binomial test)
+
+### Anomaly Consensus
+- 8-method score aggregation and normalization
+- LightGBM meta-learner for stacking anomaly scores
+- Consensus classification (unanimous/majority/contested/normal)
+- SHAP explanation of meta-learner decisions
 
 ### Risk Scoring
 - Unified calibrated risk scores aggregating all anomaly signals

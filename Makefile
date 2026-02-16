@@ -3,9 +3,9 @@ PYTHON = python3
 SRC = src
 CONFIG = config.yaml
 
-.PHONY: all setup profile parquet features eda hypothesis anomaly clustering timeseries regression network geospatial embeddings advanced-clustering autoencoder ensemble trajectory causal graph-community risk-scoring tda vae optimal-transport double-ml info-theory report test clean
+.PHONY: all setup profile parquet features eda hypothesis anomaly clustering timeseries regression network geospatial embeddings advanced-clustering autoencoder ensemble trajectory causal graph-community risk-scoring tda vae optimal-transport double-ml info-theory survival extreme-value phenotyping changepoints anomaly-consensus phase8 report test clean
 
-all: setup profile parquet features eda hypothesis anomaly clustering timeseries regression network geospatial embeddings advanced-clustering autoencoder ensemble trajectory causal graph-community risk-scoring tda vae optimal-transport double-ml info-theory report
+all: setup profile parquet features eda hypothesis anomaly clustering timeseries regression network geospatial embeddings advanced-clustering autoencoder ensemble trajectory causal graph-community risk-scoring tda vae optimal-transport double-ml info-theory survival extreme-value phenotyping changepoints anomaly-consensus report
 
 setup:
 	pip install -r requirements.txt
@@ -106,7 +106,30 @@ double-ml:
 info-theory:
 	$(PYTHON) -m $(SRC).information_theory --config $(CONFIG)
 
-# Phase 8: Generate Report
+# Phase 8A: Survival Analysis
+survival:
+	$(PYTHON) -m $(SRC).survival_analysis --config $(CONFIG)
+
+# Phase 8B: Extreme Value Theory
+extreme-value:
+	$(PYTHON) -m $(SRC).extreme_value --config $(CONFIG)
+
+# Phase 8C: Provider Phenotyping
+phenotyping:
+	$(PYTHON) -m $(SRC).provider_phenotyping --config $(CONFIG)
+
+# Phase 8D: Per-Provider Changepoint Detection
+changepoints:
+	$(PYTHON) -m $(SRC).changepoint_detection --config $(CONFIG)
+
+# Phase 8E: Cross-Method Anomaly Consensus
+anomaly-consensus:
+	$(PYTHON) -m $(SRC).anomaly_consensus --config $(CONFIG)
+
+# Phase 8: All advanced analytics
+phase8: survival extreme-value phenotyping changepoints anomaly-consensus
+
+# Report Generation
 report:
 	$(PYTHON) -m $(SRC).reporting
 

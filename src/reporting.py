@@ -42,6 +42,7 @@ def generate_findings_report(config: Optional[dict] = None) -> str:
     sections.append(_network_findings(tables_dir))
     sections.append(_phase6_findings(tables_dir))
     sections.append(_phase7_findings(tables_dir))
+    sections.append(_phase8_findings(tables_dir))
     sections.append(_limitations())
     sections.append(_methodology())
 
@@ -1146,6 +1147,203 @@ codes, characteristic of large health systems or FQHCs.
     return "\n".join(sections)
 
 
+def _phase8_findings(tables_dir: Path) -> str:
+    """Generate Phase 8 advanced analytics findings."""
+    sections = []
+
+    sections.append("""---
+
+## Phase 8: Advanced Domain-Specific Analytics
+
+### 8A. Provider Survival Analysis
+
+Clinical survival analysis methods model provider "survival" — the time until a
+provider becomes inactive or drops out of Medicaid billing. Kaplan-Meier curves,
+Cox Proportional Hazards regression, and log-rank tests quantify how provider
+characteristics predict longevity.""")
+
+    surv_path = tables_dir / "survival_summary.json"
+    if surv_path.exists():
+        with open(surv_path) as f:
+            surv = json.load(f)
+        cox = surv.get("cox_ph", {})
+        sections.append(f"""
+| Metric | Value |
+|--------|-------|
+| Providers analyzed | {surv.get('n_providers', 'N/A'):,} |
+| Event (dropout) rate | {surv.get('event_rate', 0):.1%} |
+| Median duration | {surv.get('median_duration_months', 0):.0f} months |
+| Mean duration | {surv.get('mean_duration_months', 0):.1f} months |
+| Cox concordance index | {cox.get('concordance', 0):.3f} |
+| Cox log-likelihood p-value | {cox.get('log_likelihood_p', 1):.2e} |
+
+**Key finding:** {surv.get('event_rate', 0):.0%} of providers became inactive during the
+study period. The Cox PH model achieves a concordance index of {cox.get('concordance', 0):.3f},
+indicating excellent discriminative ability. All log-rank tests between size tiers
+are highly significant (p < 1e-97), confirming that provider size strongly predicts
+Medicaid billing longevity.
+
+![Kaplan-Meier Curves](outputs/figures/survival_kaplan_meier.png)
+
+![Hazard Ratios](outputs/figures/survival_hazard_ratios.png)
+
+![Cox Coefficients](outputs/figures/survival_cox_coefficients.png)
+
+![Cohort Analysis](outputs/figures/survival_cohort_analysis.png)""")
+
+    sections.append("""
+### 8B. Extreme Value Theory (EVT)
+
+Generalized Pareto Distribution (GPD) modeling of the heavy tail of provider spending
+characterizes extreme spending risks using Value at Risk (VaR) and Conditional VaR
+(Expected Shortfall) at various confidence levels.""")
+
+    evt_path = tables_dir / "evt_summary.json"
+    if evt_path.exists():
+        with open(evt_path) as f:
+            evt = json.load(f)
+        gpd95 = evt.get("gpd_95th", {})
+        sections.append(f"""
+| Metric | Value |
+|--------|-------|
+| Providers analyzed | {evt.get('n_providers', 'N/A'):,} |
+| Tail type | {evt.get('tail_interpretation', 'N/A')} |
+| Shape parameter (xi) | {gpd95.get('shape_xi', 0):.3f} |
+| VaR 95% | {format_currency(gpd95.get('VaR_95', 0))} |
+| VaR 99% | {format_currency(gpd95.get('VaR_99', 0))} |
+| CVaR 95% | {format_currency(gpd95.get('CVaR_95', 0))} |
+| KS test p-value | {gpd95.get('ks_p_value', 0):.4f} |
+
+**Key finding:** The provider spending distribution has a **{evt.get('tail_interpretation', 'heavy')}**
+with shape parameter xi = {gpd95.get('shape_xi', 0):.3f}. This means the tail is heavier than
+exponential — extreme spending events are more probable than standard models assume.
+The 99% VaR of {format_currency(gpd95.get('VaR_99', 0))} indicates that 1% of providers
+exceed this spending level.
+
+![GPD Diagnostics](outputs/figures/evt_gpd_diagnostics.png)
+
+![Mean Excess Function](outputs/figures/evt_mean_excess.png)
+
+![Yearly Tail Evolution](outputs/figures/evt_yearly_evolution.png)
+
+![Return Levels](outputs/figures/evt_return_levels.png)
+
+![Tail Comparison](outputs/figures/evt_tail_comparison.png)""")
+
+    sections.append("""
+### 8C. Provider Phenotyping (GMM)
+
+Gaussian Mixture Models discover latent provider archetypes through soft clustering,
+where each provider has a probability of belonging to each phenotype. Unlike hard
+K-Means, this captures mixed membership and phenotype overlap.""")
+
+    pheno_path = tables_dir / "phenotype_summary.json"
+    if pheno_path.exists():
+        with open(pheno_path) as f:
+            pheno = json.load(f)
+        sections.append(f"""
+| Metric | Value |
+|--------|-------|
+| Providers analyzed | {pheno.get('n_providers', 'N/A'):,} |
+| Optimal phenotypes (BIC) | {pheno.get('n_phenotypes', 'N/A')} |
+| Mean assignment entropy | {pheno.get('mean_assignment_entropy', 0):.3f} bits |
+| High uncertainty providers | {pheno.get('high_uncertainty_pct', 0):.1f}% |
+
+**Key finding:** BIC-optimal model selection identified **{pheno.get('n_phenotypes', 'N/A')} distinct
+provider phenotypes**. Providers with high assignment entropy (> 1 bit) represent
+{pheno.get('high_uncertainty_pct', 0):.1f}% of the population, indicating genuinely mixed billing
+patterns that span multiple archetypes.
+
+![BIC/AIC Model Selection](outputs/figures/phenotype_bic_aic.png)
+
+![Phenotype Sizes](outputs/figures/phenotype_sizes.png)
+
+![Radar Profiles](outputs/figures/phenotype_radar.png)
+
+![Soft Assignment Entropy](outputs/figures/phenotype_soft_entropy.png)
+
+![HCPCS Enrichment](outputs/figures/phenotype_hcpcs_enrichment.png)
+
+![Spending by Phenotype](outputs/figures/phenotype_spending_boxplot.png)""")
+
+    sections.append("""
+### 8D. Per-Provider Changepoint Detection
+
+PELT (Pruned Exact Linear Time) changepoint detection is applied to individual
+provider monthly spending time series, detecting spending regime changes at the
+provider level rather than the aggregate level analyzed in Phase 4C.""")
+
+    cp_path = tables_dir / "changepoint_summary.json"
+    if cp_path.exists():
+        with open(cp_path) as f:
+            cp = json.load(f)
+        covid = cp.get("covid_enrichment", {})
+        sections.append(f"""
+| Metric | Value |
+|--------|-------|
+| Providers analyzed | {cp.get('n_providers_analyzed', 'N/A'):,} |
+| Total changepoints | {cp.get('n_changepoints_total', 'N/A'):,} |
+| Mean per provider | {cp.get('mean_changepoints_per_provider', 0):.1f} |
+| Providers with 0 changepoints | {cp.get('providers_with_0_cp', 0):,} |
+| Providers with 3+ changepoints | {cp.get('providers_with_3plus_cp', 0):,} |
+| COVID enrichment p-value | {covid.get('binomial_p_value', 1):.2e} |
+| COVID enrichment ratio | {covid.get('enrichment_ratio', 0):.2f}x |
+
+**Key finding:** {cp.get('n_changepoints_total', 0):,} changepoints detected across
+{cp.get('n_providers_analyzed', 0):,} providers. Changepoints are **significantly enriched
+during the COVID period** (p = {covid.get('binomial_p_value', 1):.2e}), with
+{covid.get('observed_pct', 0):.1%} of changepoints occurring during COVID vs
+{covid.get('expected_pct', 0):.1%} expected by chance — a {covid.get('enrichment_ratio', 0):.2f}x
+enrichment.
+
+![Example Changepoints](outputs/figures/changepoint_examples.png)
+
+![Timing Distribution](outputs/figures/changepoint_timing.png)
+
+![Magnitude Analysis](outputs/figures/changepoint_magnitude.png)
+
+![Changepoints per Provider](outputs/figures/changepoint_per_provider.png)""")
+
+    sections.append("""
+### 8E. Cross-Method Anomaly Consensus
+
+A meta-analysis framework unifies anomaly signals from 8 detection methods across
+Phases 4A, 6C, 6H, 7A, and 7B into a single consensus classification. A LightGBM
+meta-learner stacks the normalized scores, and consensus categories identify providers
+flagged by multiple independent methods.""")
+
+    cons_path = tables_dir / "consensus_summary.json"
+    if cons_path.exists():
+        with open(cons_path) as f:
+            cons = json.load(f)
+        meta = cons.get("meta_learner", {})
+        counts = cons.get("consensus_counts", {})
+        sections.append(f"""
+| Metric | Value |
+|--------|-------|
+| Providers analyzed | {cons.get('n_providers', 'N/A'):,} |
+| Methods integrated | {cons.get('n_methods', 'N/A')} |
+| Unanimous flags | {cons.get('unanimous_count', 0):,} |
+| Majority flags (>50%) | {cons.get('majority_count', 0):,} |
+| Contested flags | {counts.get('contested', 0):,} |
+| Meta-learner AUC | {meta.get('auc', 0):.4f} |
+
+**Key finding:** Cross-method consensus identified {cons.get('majority_count', 0):,} providers
+flagged by a majority (>50%) of methods. These represent the highest-confidence anomalies
+where multiple independent detection approaches agree. The {counts.get('contested', 0):,}
+contested providers (flagged by 1-50% of methods) may warrant selective investigation.
+
+![Method Agreement](outputs/figures/consensus_method_agreement.png)
+
+![Consensus Distribution](outputs/figures/consensus_distribution.png)
+
+![Method Overlap](outputs/figures/consensus_method_overlap.png)
+
+![Meta Importance](outputs/figures/consensus_meta_importance.png)""")
+
+    return "\n".join(sections)
+
+
 def _limitations() -> str:
     return """---
 
@@ -1240,6 +1438,13 @@ def _methodology() -> str:
 - Double Machine Learning (Chernozhukov et al., 2018) for debiased causal estimation
 - EconML CausalForestDML for heterogeneous treatment effects
 - Information theory: Shannon entropy, mutual information, transfer entropy
+
+### Advanced Domain Analytics (Phase 8)
+- Survival analysis: Kaplan-Meier, Cox Proportional Hazards, log-rank tests (lifelines)
+- Extreme Value Theory: Generalized Pareto Distribution, VaR/CVaR, return levels
+- Provider phenotyping: GMM with BIC selection, soft clustering, HCPCS enrichment
+- Per-provider changepoint detection: PELT on individual time series, COVID enrichment
+- Cross-method anomaly consensus: 8-method stacking with LightGBM meta-learner
 
 ---
 

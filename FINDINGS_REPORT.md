@@ -1,6 +1,6 @@
 # Medicaid Provider Spending Analysis: Findings Report
 
-**Generated:** 2026-02-16 05:25:08
+**Generated:** 2026-02-16 14:59:46
 **Dataset:** HHS/DOGE Medicaid Provider Spending (T-MSIS)
 **Coverage:** Fee-for-service, managed care, and CHIP claims (2018-2024)
 **Source:** Centers for Medicare & Medicaid Services (CMS), T-MSIS Analytic Files
@@ -932,6 +932,162 @@ codes, characteristic of large health systems or FQHCs.
 
 ---
 
+## Phase 8: Advanced Domain-Specific Analytics
+
+### 8A. Provider Survival Analysis
+
+Clinical survival analysis methods model provider "survival" — the time until a
+provider becomes inactive or drops out of Medicaid billing. Kaplan-Meier curves,
+Cox Proportional Hazards regression, and log-rank tests quantify how provider
+characteristics predict longevity.
+
+| Metric | Value |
+|--------|-------|
+| Providers analyzed | 617,503 |
+| Event (dropout) rate | 51.0% |
+| Median duration | 39 months |
+| Mean duration | 41.7 months |
+| Cox concordance index | 0.925 |
+| Cox log-likelihood p-value | 0.00e+00 |
+
+**Key finding:** 51% of providers became inactive during the
+study period. The Cox PH model achieves a concordance index of 0.925,
+indicating excellent discriminative ability. All log-rank tests between size tiers
+are highly significant (p < 1e-97), confirming that provider size strongly predicts
+Medicaid billing longevity.
+
+![Kaplan-Meier Curves](outputs/figures/survival_kaplan_meier.png)
+
+![Hazard Ratios](outputs/figures/survival_hazard_ratios.png)
+
+![Cox Coefficients](outputs/figures/survival_cox_coefficients.png)
+
+![Cohort Analysis](outputs/figures/survival_cohort_analysis.png)
+
+### 8B. Extreme Value Theory (EVT)
+
+Generalized Pareto Distribution (GPD) modeling of the heavy tail of provider spending
+characterizes extreme spending risks using Value at Risk (VaR) and Conditional VaR
+(Expected Shortfall) at various confidence levels.
+
+| Metric | Value |
+|--------|-------|
+| Providers analyzed | 594,234 |
+| Tail type | Heavy-tailed (Frechet-type) |
+| Shape parameter (xi) | 0.747 |
+| VaR 95% | $5.8M |
+| VaR 99% | $29.1M |
+| CVaR 95% | $35.3M |
+| KS test p-value | 0.0572 |
+
+**Key finding:** The provider spending distribution has a **Heavy-tailed (Frechet-type)**
+with shape parameter xi = 0.747. This means the tail is heavier than
+exponential — extreme spending events are more probable than standard models assume.
+The 99% VaR of $29.1M indicates that 1% of providers
+exceed this spending level.
+
+![GPD Diagnostics](outputs/figures/evt_gpd_diagnostics.png)
+
+![Mean Excess Function](outputs/figures/evt_mean_excess.png)
+
+![Yearly Tail Evolution](outputs/figures/evt_yearly_evolution.png)
+
+![Return Levels](outputs/figures/evt_return_levels.png)
+
+![Tail Comparison](outputs/figures/evt_tail_comparison.png)
+
+### 8C. Provider Phenotyping (GMM)
+
+Gaussian Mixture Models discover latent provider archetypes through soft clustering,
+where each provider has a probability of belonging to each phenotype. Unlike hard
+K-Means, this captures mixed membership and phenotype overlap.
+
+| Metric | Value |
+|--------|-------|
+| Providers analyzed | 617,503 |
+| Optimal phenotypes (BIC) | 15 |
+| Mean assignment entropy | 0.140 bits |
+| High uncertainty providers | 1.3% |
+
+**Key finding:** BIC-optimal model selection identified **15 distinct
+provider phenotypes**. Providers with high assignment entropy (> 1 bit) represent
+1.3% of the population, indicating genuinely mixed billing
+patterns that span multiple archetypes.
+
+![BIC/AIC Model Selection](outputs/figures/phenotype_bic_aic.png)
+
+![Phenotype Sizes](outputs/figures/phenotype_sizes.png)
+
+![Radar Profiles](outputs/figures/phenotype_radar.png)
+
+![Soft Assignment Entropy](outputs/figures/phenotype_soft_entropy.png)
+
+![HCPCS Enrichment](outputs/figures/phenotype_hcpcs_enrichment.png)
+
+![Spending by Phenotype](outputs/figures/phenotype_spending_boxplot.png)
+
+### 8D. Per-Provider Changepoint Detection
+
+PELT (Pruned Exact Linear Time) changepoint detection is applied to individual
+provider monthly spending time series, detecting spending regime changes at the
+provider level rather than the aggregate level analyzed in Phase 4C.
+
+| Metric | Value |
+|--------|-------|
+| Providers analyzed | 4,964 |
+| Total changepoints | 10,259 |
+| Mean per provider | 2.1 |
+| Providers with 0 changepoints | 12 |
+| Providers with 3+ changepoints | 1,345 |
+| COVID enrichment p-value | 1.10e-10 |
+| COVID enrichment ratio | 1.11x |
+
+**Key finding:** 10,259 changepoints detected across
+4,964 providers. Changepoints are **significantly enriched
+during the COVID period** (p = 1.10e-10), with
+29.0% of changepoints occurring during COVID vs
+26.2% expected by chance — a 1.11x
+enrichment.
+
+![Example Changepoints](outputs/figures/changepoint_examples.png)
+
+![Timing Distribution](outputs/figures/changepoint_timing.png)
+
+![Magnitude Analysis](outputs/figures/changepoint_magnitude.png)
+
+![Changepoints per Provider](outputs/figures/changepoint_per_provider.png)
+
+### 8E. Cross-Method Anomaly Consensus
+
+A meta-analysis framework unifies anomaly signals from 8 detection methods across
+Phases 4A, 6C, 6H, 7A, and 7B into a single consensus classification. A LightGBM
+meta-learner stacks the normalized scores, and consensus categories identify providers
+flagged by multiple independent methods.
+
+| Metric | Value |
+|--------|-------|
+| Providers analyzed | 617,503 |
+| Methods integrated | 8 |
+| Unanimous flags | 0 |
+| Majority flags (>50%) | 6,622 |
+| Contested flags | 144,852 |
+| Meta-learner AUC | 1.0000 |
+
+**Key finding:** Cross-method consensus identified 6,622 providers
+flagged by a majority (>50%) of methods. These represent the highest-confidence anomalies
+where multiple independent detection approaches agree. The 144,852
+contested providers (flagged by 1-50% of methods) may warrant selective investigation.
+
+![Method Agreement](outputs/figures/consensus_method_agreement.png)
+
+![Consensus Distribution](outputs/figures/consensus_distribution.png)
+
+![Method Overlap](outputs/figures/consensus_method_overlap.png)
+
+![Meta Importance](outputs/figures/consensus_meta_importance.png)
+
+---
+
 ## Limitations & Caveats
 
 1. **No geographic data**: The dataset lacks state/geography identifiers, preventing
@@ -1021,6 +1177,13 @@ codes, characteristic of large health systems or FQHCs.
 - Double Machine Learning (Chernozhukov et al., 2018) for debiased causal estimation
 - EconML CausalForestDML for heterogeneous treatment effects
 - Information theory: Shannon entropy, mutual information, transfer entropy
+
+### Advanced Domain Analytics (Phase 8)
+- Survival analysis: Kaplan-Meier, Cox Proportional Hazards, log-rank tests (lifelines)
+- Extreme Value Theory: Generalized Pareto Distribution, VaR/CVaR, return levels
+- Provider phenotyping: GMM with BIC selection, soft clustering, HCPCS enrichment
+- Per-provider changepoint detection: PELT on individual time series, COVID enrichment
+- Cross-method anomaly consensus: 8-method stacking with LightGBM meta-learner
 
 ---
 

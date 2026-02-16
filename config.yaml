@@ -132,3 +132,26 @@ information_theory:
   entropy_n_bins: 100
   mi_n_neighbors: 5
   te_lag: 1
+
+# Phase 8A: Survival Analysis
+survival:
+  censoring_lag_months: 6
+
+# Phase 8B: Extreme Value Theory
+evt:
+  threshold_quantile_primary: 0.95
+  threshold_quantile_secondary: 0.99
+
+# Phase 8C: Provider Phenotyping
+phenotyping:
+  k_min: 2
+  k_max: 15
+
+# Phase 8D: Changepoint Detection
+changepoint:
+  top_n_providers: 5000
+  min_months: 24
+
+# Phase 8E: Anomaly Consensus
+consensus:
+  threshold: 0.95

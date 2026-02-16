@@ -1,0 +1,76 @@
+{
+  "n_providers": 617503,
+  "event_rate": 0.5098469157234864,
+  "median_duration_months": 39.0,
+  "mean_duration_months": 41.748106486932045,
+  "kaplan_meier": {
+    "Small (<p50)": {
+      "n": 308751,
+      "n_events": 226181,
+      "median_survival": 19.0,
+      "survival_12m": 0.5881083890165104,
+      "survival_24m": 0.4478867570001699,
+      "survival_48m": 0.2757005517002301
+    },
+    "Medium (p50-p90)": {
+      "n": 247001,
+      "n_events": 82136,
+      "median_survival": null,
+      "survival_12m": 0.9598429581487353,
+      "survival_24m": 0.8979122930860621,
+      "survival_48m": 0.7696514022651899
+    },
+    "Large (p90-p99)": {
+      "n": 55575,
+      "n_events": 6318,
+      "median_survival": null,
+      "survival_12m": 0.9959475119779259,
+      "survival_24m": 0.9800233518645957,
+      "survival_48m": 0.9467532402601406
+    },
+    "Mega (>p99)": {
+      "n": 6176,
+      "n_events": 197,
+      "median_survival": null,
+      "survival_12m": 0.9988665803108812,
+      "survival_24m": 0.99416537905059,
+      "survival_48m": 0.9853298613650536
+    }
+  },
+  "cox_ph": {
+    "concordance": 0.9252245024496573,
+    "log_likelihood": 759056.6216140045,
+    "log_likelihood_p": 0.0,
+    "n_observations": 617503,
+    "n_events": 314832,
+    "coefficients": {
+      "claims_per_month": 0.255233063262566,
+      "n_years_active": -2.4552406740941946,
+      "n_unique_hcpcs": -0.7577520842257821,
+      "n_servicing_npis": -0.2343674853502819,
+      "paid_per_claim": -0.13250376867382496,
+      "claims_per_beneficiary": -0.1623904991599214
+    },
+    "hazard_ratios": {
+      "claims_per_month": 1.2907624151191495,
+      "n_years_active": 0.0858425328809506,
+      "n_unique_hcpcs": 0.4687188842226589,
+      "n_servicing_npis": 0.791071055449844,
+      "paid_per_claim": 0.8758996331199623,
+      "claims_per_beneficiary": 0.850109172797575
+    },
+    "p_values": {
+      "claims_per_month": 0.0,
+      "n_years_active": 0.0,
+      "n_unique_hcpcs": 0.0,
+      "n_servicing_npis": 6.387443724063939e-155,
+      "paid_per_claim": 0.0,
+      "claims_per_beneficiary": 0.0
+    }
+  },
+  "cohort_analysis": {
+    "n_cohorts": 7,
+    "highest_dropout_year": 2019,
+    "highest_dropout_rate": 0.6308832365311436
+  }
+}

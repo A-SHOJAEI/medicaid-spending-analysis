@@ -1,0 +1,9 @@
+,method,importance
+7,svd_knn_anomaly_norm,803
+1,lof_score_norm,758
+6,vae_anomaly_score_norm,704
+5,tda_anomaly_score_norm,615
+2,ae_reconstruction_error_norm,537
+3,risk_probability_norm,497
+4,fraud_flags_count_norm,181
+0,isolation_forest_score_norm,122

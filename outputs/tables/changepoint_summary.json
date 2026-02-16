@@ -1,0 +1,25 @@
+{
+  "n_providers_analyzed": 4964,
+  "n_changepoints_total": 10259,
+  "mean_changepoints_per_provider": 2.0666800966962127,
+  "providers_with_0_cp": 12,
+  "providers_with_3plus_cp": 1345,
+  "type_distribution": {
+    "mean_shift": 5072,
+    "variance_shift": 3308,
+    "trend_break": 1879
+  },
+  "direction_distribution": {
+    "increase": 5909,
+    "decrease": 4350
+  },
+  "covid_enrichment": {
+    "n_total_changepoints": 10259,
+    "n_covid_changepoints": 2973,
+    "expected_pct": 0.2619047619047619,
+    "observed_pct": 0.28979432693244955,
+    "enrichment_ratio": 1.1064874301057164,
+    "binomial_p_value": 1.1042369824309108e-10,
+    "significant": 1
+  }
+}

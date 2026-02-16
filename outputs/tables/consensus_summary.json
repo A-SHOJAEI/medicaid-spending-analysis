@@ -1,0 +1,29 @@
+{
+  "n_providers": 617503,
+  "n_methods": 8,
+  "methods": [
+    "isolation_forest_score",
+    "lof_score",
+    "ae_reconstruction_error",
+    "risk_probability",
+    "fraud_flags_count",
+    "tda_anomaly_score",
+    "vae_anomaly_score",
+    "svd_knn_anomaly"
+  ],
+  "consensus_counts": {
+    "normal": 466029,
+    "contested": 144852,
+    "majority": 6622
+  },
+  "mean_methods_flagging": 0.39447905516248505,
+  "unanimous_count": 0,
+  "majority_count": 6622,
+  "meta_learner": {
+    "auc": 1.0,
+    "average_precision": 1.0,
+    "n_train": 339627,
+    "n_positive": 30876
+  },
+  "threshold": 0.95
+}

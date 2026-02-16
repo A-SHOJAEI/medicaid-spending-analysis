@@ -1,0 +1,36 @@
+{
+  "n_providers": 617503,
+  "n_phenotypes": 15,
+  "best_bic": -16186706.224710958,
+  "phenotype_sizes": {
+    "0": 170318,
+    "1": 12150,
+    "2": 28836,
+    "3": 32464,
+    "4": 61614,
+    "5": 23282,
+    "6": 85789,
+    "7": 65574,
+    "8": 23259,
+    "9": 23465,
+    "10": 23532,
+    "11": 32809,
+    "12": 13343,
+    "13": 9418,
+    "14": 11650
+  },
+  "mean_assignment_entropy": 0.1397549133577301,
+  "high_uncertainty_pct": 1.3248518630678716,
+  "features_used": [
+    "total_paid",
+    "total_claims",
+    "total_beneficiaries",
+    "paid_per_claim",
+    "paid_per_beneficiary",
+    "claims_per_beneficiary",
+    "n_years_active",
+    "n_months_active",
+    "n_unique_hcpcs",
+    "n_servicing_npis"
+  ]
+}

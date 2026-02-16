@@ -34,3 +34,6 @@ ripser>=0.6.0
 persim>=0.3.0
 pot>=0.9.0
 econml>=0.15.0
+
+# Phase 8: Advanced Analytics
+lifelines>=0.28.0
