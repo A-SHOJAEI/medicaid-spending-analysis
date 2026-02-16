@@ -1,0 +1,46 @@
+# Large data files
+data/raw/
+data/processed/*.parquet
+data/processed/*.npz
+data/external/
+*.parquet
+
+# Raw CSV (too large for git)
+medicaid-provider-spending.csv
+
+# Model files (large binaries)
+outputs/models/*.pt
+outputs/models/*.joblib
+outputs/models/*.pkl
+
+# Python
+**/__pycache__/
+.pytest_cache/
+*.py[cod]
+*$py.class
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# Virtual environment
+venv/
+.venv/
+env/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+._*
+Thumbs.db
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Environment
+.env

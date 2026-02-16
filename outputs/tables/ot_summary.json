@@ -1,0 +1,19 @@
+{
+  "years_analyzed": [
+    2018,
+    2019,
+    2020,
+    2021,
+    2022,
+    2023,
+    2024
+  ],
+  "n_year_pairs": 6,
+  "max_wasserstein_shift": {
+    "from": 2020,
+    "to": 2021,
+    "distance": 0.1074472755467317
+  },
+  "pre_post_covid_wasserstein": 0.07678563378752645,
+  "total_cumulative_shift": 0.31125706317644136
+}

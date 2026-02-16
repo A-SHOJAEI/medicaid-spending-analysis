@@ -1,0 +1,13 @@
+{
+  "n_providers": 617503,
+  "input_dim": 12,
+  "latent_dim": 16,
+  "n_parameters": 23724,
+  "epochs_trained": 17,
+  "final_train_loss": 5.94850017858106,
+  "final_val_loss": 5.534552221712858,
+  "mean_recon_error": 1.7154980897903442,
+  "mean_kl_divergence": 4.119772911071777,
+  "anomaly_99th_percentile": 0.2656428962945933,
+  "anomaly_95th_percentile": 0.08905569463968278
+}

@@ -1,0 +1,134 @@
+# Medicaid Provider Spending Analysis - Central Configuration
+paths:
+  raw_data: "../medicaid-provider-spending.csv"
+  processed_dir: "data/processed"
+  external_dir: "data/external"
+  figures_dir: "outputs/figures"
+  tables_dir: "outputs/tables"
+  models_dir: "outputs/models"
+
+data:
+  chunksize: 2000000  # rows per chunk for CSV reading
+  date_column: "CLAIM_FROM_MONTH"
+  date_format: "%Y-%m"
+  columns:
+    billing_npi: "BILLING_PROVIDER_NPI_NUM"
+    servicing_npi: "SERVICING_PROVIDER_NPI_NUM"
+    hcpcs: "HCPCS_CODE"
+    month: "CLAIM_FROM_MONTH"
+    beneficiaries: "TOTAL_UNIQUE_BENEFICIARIES"
+    claims: "TOTAL_CLAIMS"
+    paid: "TOTAL_PAID"
+
+analysis:
+  significance_level: 0.05
+  bonferroni_correction: true
+  random_seed: 42
+  n_clusters_range: [2, 15]
+  anomaly_contamination: 0.01
+  top_n_providers: 100
+  top_n_procedures: 50
+  min_claims_threshold: 12  # dataset already suppresses <12
+
+plotting:
+  dpi: 300
+  figsize_default: [12, 8]
+  figsize_wide: [16, 8]
+  figsize_tall: [12, 16]
+  style: "seaborn-v0_8-whitegrid"
+  palette: "viridis"
+  font_scale: 1.2
+
+# Phase 6A: Provider Embeddings
+embeddings:
+  n_components_svd: 64
+  n_components_nmf: 64
+  knn_k: 10
+  batch_size: 5000
+
+# Phase 6B: Advanced Clustering
+advanced_clustering:
+  umap_n_neighbors: 30
+  umap_min_dist: 0.0
+  umap_metric: "cosine"
+  hdbscan_min_cluster_size: 100
+  hdbscan_min_samples: 10
+  cluster_selection_method: "eom"
+
+# Phase 6C: Autoencoder
+autoencoder:
+  architecture: [128, 64, 32]
+  batch_size: 4096
+  epochs: 100
+  learning_rate: 0.001
+  weight_decay: 0.0001
+  dropout: 0.1
+  patience: 15
+
+# Phase 6D: Ensemble Model
+ensemble:
+  n_folds: 5
+  n_optuna_trials: 15
+  conformal_alpha: 0.1
+  shap_sample_size: 5000
+
+# Phase 6E: Trajectory Analysis
+trajectory:
+  min_months_for_trend: 12
+  min_months_for_seasonality: 36
+  kshape_n_clusters: 8
+  kshape_top_n: 10000
+
+# Phase 6F: Causal Analysis
+causal:
+  intervention_date: "2020-03-01"
+  top_n_providers: 50000
+  rdd_bandwidth: 12
+
+# Phase 6G: Graph Community
+graph_community:
+  max_providers: 20000
+  min_shared_codes: 3
+  louvain_resolution: 1.0
+  spectral_n_components: 10
+
+# Phase 6H: Risk Scoring
+risk_scoring:
+  agreement_threshold: 3
+  risk_tiers: [0.05, 0.15, 0.35, 0.65]
+  top_n_profiles: 50
+
+# Phase 7A: Topological Data Analysis
+tda:
+  n_sample: 5000
+  max_dim: 1
+  max_edge: 8.0
+  topo_k: 20
+
+# Phase 7B: Variational Autoencoder
+vae:
+  architecture: [128, 64]
+  latent_dim: 16
+  batch_size: 4096
+  epochs: 100
+  learning_rate: 0.001
+  dropout: 0.1
+  beta_max: 4.0
+  patience: 15
+
+# Phase 7C: Optimal Transport
+optimal_transport:
+  sinkhorn_reg: 0.1
+  n_bins: 200
+
+# Phase 7D: Double Machine Learning
+dml:
+  n_folds: 5
+  causal_forest_n_estimators: 200
+  causal_forest_max_depth: 8
+
+# Phase 7E: Information Theory
+information_theory:
+  entropy_n_bins: 100
+  mi_n_neighbors: 5
+  te_lag: 1

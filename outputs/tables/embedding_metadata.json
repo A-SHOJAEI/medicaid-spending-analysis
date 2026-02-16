@@ -1,0 +1,14 @@
+{
+  "matrix_shape": [
+    617503,
+    10881
+  ],
+  "nnz": 5842442,
+  "density_pct": 0.08695339185832297,
+  "svd_n_components": 64,
+  "svd_explained_variance": 0.5953613918497405,
+  "nmf_n_components": 64,
+  "knn_k": 10,
+  "n_providers": 617503,
+  "n_hcpcs": 10881
+}

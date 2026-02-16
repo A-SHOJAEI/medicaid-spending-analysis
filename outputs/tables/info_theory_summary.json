@@ -1,0 +1,10 @@
+{
+  "n_providers": 617503,
+  "mean_billing_entropy": 1.140314247424908,
+  "median_billing_entropy": 0.9296081758047768,
+  "max_billing_entropy": 7.886671947323156,
+  "top_mi_feature": "total_claims",
+  "top_mi_value": 0.9468976708418593,
+  "n_transfer_entropy_pairs": 6,
+  "max_transfer_entropy": 0.0
+}

@@ -1,0 +1,2 @@
+,n_providers,n_hcpcs,bipartite_nodes,bipartite_edges,unipartite_nodes,unipartite_edges,n_communities,modularity,n_connected_components
+0,20000,8783,28783,1276727,20000,34492140,2887,0.2330366406981645,2879

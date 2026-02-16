@@ -1,0 +1,5 @@
+,method,estimate,se,p_value,interpretation
+0,Difference-in-Differences,0.07425999360557518,0.01029704040411393,5.522500840401805e-13,High-vol providers had 0.074 higher log-spending increase post-COVID
+1,BSTS Counterfactual,363.0461543841904,,,Aggregate spending was 363.0% above counterfactual post-COVID
+2,Regression Discontinuity,-0.19185366584245067,0.04532876756948675,0.00037265208532882046,Discrete -0.192 log-point jump at COVID onset
+3,Synthetic Control,1270617828.5985188,,,Mean monthly gap: $1.27B

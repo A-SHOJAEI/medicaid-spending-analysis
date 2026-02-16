@@ -1,0 +1,222 @@
+[
+  {
+    "name": "H1: COVID Spending Shock",
+    "null_hypothesis": "Monthly spending in 2020-2021 equals 2018-2019 baseline",
+    "alt_hypothesis": "Monthly spending differs between periods",
+    "test": "Wilcoxon signed-rank test",
+    "statistic": 0.0,
+    "p_value": 0.00048828125,
+    "effect_size": 1.0,
+    "ci_95_lower": 1176717332.7506242,
+    "ci_95_upper": 3285117490.017124,
+    "conclusion": "Reject H0. COVID period spending was +25.1% vs pre-COVID. Effect size (rank-biserial r) = 1.000.",
+    "details": {
+      "pct_change": 25.077788065757645,
+      "pre_mean_monthly": 9815497731.45917,
+      "covid_mean_monthly": 12277007450.15375,
+      "corrected_p_value": 0.001220703125,
+      "reject_after_fdr": true
+    }
+  },
+  {
+    "name": "H2: Post-COVID Sustained Increase",
+    "null_hypothesis": "Post-COVID monthly spending <= pre-COVID monthly spending",
+    "alt_hypothesis": "Post-COVID monthly spending > pre-COVID",
+    "test": "Mann-Whitney U (one-sided)",
+    "statistic": 24.0,
+    "p_value": 3.901449618653422e-10,
+    "effect_size": 0.9444444444444444,
+    "ci_95_lower": 4925051464.527017,
+    "ci_95_upper": 6562964641.11876,
+    "conclusion": "Reject H0. Post-COVID spending is +59.4% vs pre-COVID.",
+    "details": {
+      "pct_change": 59.42552294061295,
+      "pre_mean": 9815497731.459166,
+      "post_mean": 15648408587.602776,
+      "corrected_p_value": 1.3004832062178073e-09,
+      "reject_after_fdr": true
+    }
+  },
+  {
+    "name": "H3: Power-Law Provider Spending",
+    "null_hypothesis": "Provider spending follows a lognormal distribution",
+    "alt_hypothesis": "Provider spending follows a power-law distribution",
+    "test": "Likelihood ratio test (power-law vs. lognormal)",
+    "statistic": -7.482206030307694,
+    "p_value": 0.04719561035542126,
+    "effect_size": 2.1358879594946902,
+    "ci_95_lower": null,
+    "ci_95_upper": null,
+    "conclusion": "Lognormal is preferred (R=-7.482, p=4.720e-02). Power-law exponent alpha=2.14, xmin=11657136.",
+    "details": {
+      "alpha": 2.1358879594946902,
+      "xmin": 11657135.65,
+      "loglikelihood_ratio": -7.482206030307694,
+      "preferred": "lognormal",
+      "corrected_p_value": 0.09439122071084252,
+      "reject_after_fdr": false
+    }
+  },
+  {
+    "name": "H4: Spending Growth Acceleration",
+    "null_hypothesis": "YoY spending growth rate has no trend over time",
+    "alt_hypothesis": "YoY spending growth rate shows a significant trend",
+    "test": "Kendall tau trend test",
+    "statistic": -0.3333333333333333,
+    "p_value": 0.46944444444444444,
+    "effect_size": null,
+    "ci_95_lower": null,
+    "ci_95_upper": null,
+    "conclusion": "Fail to reject H0. Kendall tau = -0.333. Growth rate is decelerating (p=0.469).",
+    "details": {
+      "annual_growth_rates": {
+        "2019": 16.79,
+        "2020": 4.08,
+        "2021": 23.07,
+        "2022": 10.46,
+        "2023": 10.71,
+        "2024": -6.95
+      },
+      "corrected_p_value": 0.5216049382716049,
+      "reject_after_fdr": false
+    }
+  },
+  {
+    "name": "H5: Monthly Seasonality",
+    "null_hypothesis": "Monthly spending does not differ across months of the year",
+    "alt_hypothesis": "Monthly spending differs significantly by month",
+    "test": "Kruskal-Wallis H-test",
+    "statistic": 2.7339735894357204,
+    "p_value": 0.9937950729726361,
+    "effect_size": -0.11480592236894832,
+    "ci_95_lower": null,
+    "ci_95_upper": null,
+    "conclusion": "Fail to reject H0. Eta-squared = -0.1148. Weak effect.",
+    "details": {
+      "corrected_p_value": 0.9937950729726361,
+      "reject_after_fdr": false
+    }
+  },
+  {
+    "name": "H6: Procedure Concentration Shift",
+    "null_hypothesis": "HCPCS concentration (HHI) has no trend over time",
+    "alt_hypothesis": "HCPCS concentration changes over time",
+    "test": "Kendall tau trend test",
+    "statistic": 0.6190476190476191,
+    "p_value": 0.06904761904761905,
+    "effect_size": null,
+    "ci_95_lower": null,
+    "ci_95_upper": null,
+    "conclusion": "Fail to reject H0. HHI is increasing (more concentrated). Tau = 0.619.",
+    "details": {
+      "yearly_hhi": {
+        "2018": 179.00908365400204,
+        "2019": 206.39229552158142,
+        "2020": 233.9265668309102,
+        "2021": 204.57964183299143,
+        "2022": 206.85065858505914,
+        "2023": 217.70514072590944,
+        "2024": 249.49975199572333
+      },
+      "corrected_p_value": 0.11507936507936509,
+      "reject_after_fdr": false
+    }
+  },
+  {
+    "name": "H7: Multi-Servicing NPI Spending",
+    "null_hypothesis": "Providers with multiple servicing NPIs have same spending as single-NPI",
+    "alt_hypothesis": "Multi-servicing NPI providers have higher total spending",
+    "test": "Mann-Whitney U (one-sided)",
+    "statistic": 18188858235.0,
+    "p_value": 0.0,
+    "effect_size": 0.4852990948898618,
+    "ci_95_lower": 839719.5086650001,
+    "ci_95_upper": 6091988.522533739,
+    "conclusion": "Reject H0. Multi-servicing NPI providers have higher spending. Median single: $24.0K, Median multi: $327.9K.",
+    "details": {
+      "n_single": 465755,
+      "n_multi": 151748,
+      "median_single": 23988.14,
+      "median_multi": 327920.5,
+      "corrected_p_value": 0.0,
+      "reject_after_fdr": true
+    }
+  },
+  {
+    "name": "H8: Claims per Beneficiary Trend",
+    "null_hypothesis": "Claims per beneficiary is stable over time",
+    "alt_hypothesis": "Claims per beneficiary shows a significant trend",
+    "test": "Kendall tau + OLS regression",
+    "statistic": -0.33333333333333337,
+    "p_value": 0.3813492063492063,
+    "effect_size": 0.30868150031438335,
+    "ci_95_lower": null,
+    "ci_95_upper": null,
+    "conclusion": "Fail to reject H0. Claims/beneficiary is decreasing (tau=-0.333, R^2=0.309, slope=-0.0074/year).",
+    "details": {
+      "yearly_claims_per_bene": {
+        "2018": 1.666,
+        "2019": 1.6946,
+        "2020": 1.7164,
+        "2021": 1.6383,
+        "2022": 1.6511,
+        "2023": 1.6485,
+        "2024": 1.6498
+      },
+      "slope_per_year": -0.007361466359405711,
+      "r_squared": 0.30868150031438335,
+      "corrected_p_value": 0.4766865079365079,
+      "reject_after_fdr": false
+    }
+  },
+  {
+    "name": "H9: Per-Claim Cost Inflation",
+    "null_hypothesis": "Paid per claim grows at the same rate as CPI (~3%/year)",
+    "alt_hypothesis": "Paid per claim grows faster than CPI",
+    "test": "One-sample t-test vs 3% benchmark",
+    "statistic": 1.0269211325928804,
+    "p_value": 0.17577406450908803,
+    "effect_size": 0.045845148239900935,
+    "ci_95_lower": 0.005236626205004279,
+    "ci_95_upper": 0.08771106989717775,
+    "conclusion": "Fail to reject H0. Medicaid cost per claim CAGR = 4.6% vs CPI benchmark of 3%. Mean annual growth rate = 4.6% (95% CI: [0.5%, 8.8%]).",
+    "details": {
+      "cagr": 0.045845148239900935,
+      "cpi_benchmark": 0.03,
+      "mean_growth_rate": 0.04647384805109101,
+      "yearly_paid_per_claim": {
+        "2018": 50.91,
+        "2019": 52.89,
+        "2020": 57.33,
+        "2021": 55.97,
+        "2022": 58.16,
+        "2023": 61.77,
+        "2024": 66.62
+      },
+      "corrected_p_value": 0.25110580644155434,
+      "reject_after_fdr": false
+    }
+  },
+  {
+    "name": "H10: Provider Specialization vs Cost",
+    "null_hypothesis": "Specialized providers have same per-claim cost as generalists",
+    "alt_hypothesis": "Per-claim cost differs between specialist and generalist providers",
+    "test": "Mann-Whitney U + Spearman correlation",
+    "statistic": 10066191918.5,
+    "p_value": 0.0,
+    "effect_size": -0.21748584715545097,
+    "ci_95_lower": null,
+    "ci_95_upper": null,
+    "conclusion": "Reject H0. Spearman rho = -0.217 (p=0.00e+00). Median specialist: $46.09, Median generalist: $31.07.",
+    "details": {
+      "n_specialist": 281841,
+      "n_generalist": 57963,
+      "median_specialist_ppc": 46.090099383139126,
+      "median_generalist_ppc": 31.074274748009504,
+      "spearman_rho": -0.21748584715545097,
+      "spearman_p": 0.0,
+      "corrected_p_value": 0.0,
+      "reject_after_fdr": true
+    }
+  }
+]

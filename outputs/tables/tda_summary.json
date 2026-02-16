@@ -1,0 +1,11 @@
+{
+  "n_providers": 617503,
+  "n_sample_persistence": 5000,
+  "n_features_used": 12,
+  "h0_features": 4993,
+  "h1_features": 3190,
+  "h1_max_lifetime": 0.8221665024757385,
+  "persistence_entropy_h1": 10.170146245690884,
+  "tda_anomaly_top5pct_threshold": 0.06280824886523001,
+  "tda_anomaly_top1pct_threshold": 0.3688974263203366
+}
